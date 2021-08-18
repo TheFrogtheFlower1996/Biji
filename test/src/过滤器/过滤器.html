@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/dayjs.min.js"></script>
+</head>
+<body>
+<div id="root">
+    <h3>格式化时间，计算属性实现</h3>
+    <h4>{{fmtTime}}</h4>
+    <h3>格式化时间，过滤器实现</h3>
+    <h4>{{time | timeFormater}}</h4>
+    <h3>过滤器传参，传参，过滤器串联</h3>
+    <h4>{{time | timeFormater('YYYY-MM-DD') | mySlice}}</h4>
+</div>
+
+<div id="root2">
+    <h3>{{say | mySlice}}</h3>
+</div>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false
+    Vue.filter('mySlice',function (val) {//全局过滤器
+        return val.slice(0,4)
+    })
+    new Vue({
+        el:'#root',
+        data:{
+            time:1629274498538
+        },
+        computed:{
+            fmtTime(){
+                return dayjs(this.time).format('YYYY年MM月DD日 HH:mm:ss')
+            }
+        },
+        filters: {
+            timeFormater(val,str='YYYY年MM月DD日 HH:mm:ss'){
+                return dayjs(val).format(str)
+            },
+            // mySlice(val){
+            //     return val.slice(0,4)
+            // }
+        }
+    })
+
+    new Vue({
+        el:'#root2',
+        data:{
+            say:'hello filter 过滤器'
+        }
+    })
+</script>
+</body>
+</html>

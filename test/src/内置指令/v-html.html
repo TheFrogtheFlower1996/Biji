@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-html指令</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <h3>显示 v-html 的作用</h3>
+    <div v-html="str"></div>
+</div>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false
+    new Vue({
+        el:'#root',
+        data:{
+            str:'<h4>你好 v-html</h4>'
+        }
+    })
+</script>
+</body>
+</html>
