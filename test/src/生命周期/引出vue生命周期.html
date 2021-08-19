@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>引出vue生命周期</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h2 :style="{opacity}">欢迎光临vue</h2>
+    </div>
+</body>
+<!--
+    生命周期：生命周期钩子
+        1.vue在关键时刻帮我们调用的一些特殊的函数
+        2.生命周期函数名字不能修改
+        3.生命周期函数中的this指向vm或组件实例对象
+-->
+
+<script type="text/javascript">
+    Vue.config.productionTip = false
+    const vm = new Vue({
+        el:'#root',
+        data:{
+            opacity:1
+        },
+        //vue完成模板解析并把初始的真实DOM元素放入页面后调用mounted（挂载完毕）
+        mounted() {
+            console.log("页面加载前调用")
+            setInterval(()=>{
+                this.opacity -= 0.01
+                if (this.opacity <= 0) this.opacity = 1
+            },16)
+        },
+        methods:{
+            change(){
+
+            }
+        },
+    })
+
+/*    setInterval(()=>{ // vue外部定时器不推荐
+        vm.opacity -= 0.01
+        if (vm.opacity <= 0) vm.opacity = 1
+    },16)*/
+
+</script>
+</html>
