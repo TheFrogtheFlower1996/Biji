@@ -8,7 +8,9 @@
 </head>
 <body>
     <div id="root">
-
+        <h2>n值：{{n}}</h2>
+        <button @click="add">点击n++</button>
+        <button @click="bye">销毁vm</button>
     </div>
 </body>
 <script type="text/javascript">
@@ -16,8 +18,41 @@
     new Vue({
         el:'#root',
         data:{
+            n:1,
+        },
+        beforeCreate() {
+            console.log("beforeCreate")
+        },
+        created(){
+            console.log("created")
+            // console.log(this)
+        },
+        beforeMount() {
+            console.log("beforeMount")
+            // console.log(this)
+        },
+        mounted() {
+            console.log("mounted")
+            // console.log(this)
+        },
+        beforeUpdate() {
+            console.log("beforeUpdate")
+            // console.log(this.n)
+        },
+        updated() {
+            console.log("updated")
+            // console.log(this.n)
+        },
+        methods:{
+            add(){
+                this.n++
+            },
+            bye(){
+                console.log("销毁vm")
+                this.$destroy()
+            }
+        },
 
-        }
     })
 </script>
 
