@@ -1,24 +1,21 @@
-# test
+# vue 笔记
 
-## Project setup
-```
-npm install
-```
+## 生命周期图解 lifecycle
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+![img_0.png](src/image/lifecycle.png)
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### 1.created
 
-### Lints and fixes files
-```
-npm run lint
-```
+![img_1.png](src/image/created.png)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 2.mounted
+
+![img_2.png](src/image/mounted.png)
+
+### 3.update
+
+![img_3.png](src/image/update.png)
+
+### 4.destroyed
+
+![img_4.png](src/image/destroyed.png)
