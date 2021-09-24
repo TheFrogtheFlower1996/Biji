@@ -64,7 +64,70 @@
  *  subList(int fromIndex,int toIndex) 返回从fromIndex到toIndex位置的子集合，包括前面
 ~~~
 
+3.List接口练习
+~~~
+/**
+ *  使用 list接口实现类添加三本书，并遍历
+ *  要求：
+ *      1.按价格排序，从低到高（冒泡排序）
+ *
+ * */
+public class list接口练习 {
+    public static void main(String[] args) {
 
+        List list = new ArrayList();
+
+        list.add(new Book("三国演义","罗贯中",50.0));
+        list.add(new Book("红楼梦","曹雪芹",100.0));
+        list.add(new Book("西游记","吴承恩",30.0));
+        list.add(new Book("水浒传","施耐庵",60.0));
+
+        for (Object o : list) {
+            System.out.println(o);
+        }
+
+        sort(list);
+
+        System.out.println("----------------排序后");
+        for (Object o : list) {
+            System.out.println(o);
+        }
+
+
+    }
+
+    //冒泡排序，从低到高
+    public static void sort(List list){
+        int size = list.size();
+        for (int i = 0; i <size -1; i++) {
+            for (int j = 0; j < size -i -1; j++) {
+                Book book = (Book) list.get(j);
+                Book book1 =(Book) list.get(j + 1);
+                if (book.getPrice() > book1.getPrice()){
+                    list.set(j,book1);
+                    list.set(j+1,book);
+                }
+            }
+        }
+    }
+}
+class Book {...}
+~~~
+
+4.ArrayList注意事项
+~~~
+1.ArrayList是由 数组 来实现数据存储的
+2.ArrayList等同于Vector，ArrayList是线程不安全(执行效率高)；在多线程情况下，不建议使用ArrayList
+~~~
+
+5.ArrayList的底层操作机制和源码分析
+~~~
+1.ArrayList中维护了一个Object类型的数组elementData
+2.当创建ArrayList对象时，如果使用的是无参构造器，则初始elementData的容量为0，第一次添加则扩容elementData为10，如需要再次扩容，则扩容elementData为1.5倍
+3.如果使用的是指定大小的构造器，则初始elementData容量为指定大小，如果需要扩容，则直接扩容elementData的1.5倍
+~~~
+
+![img_0.png](src/image/ArrayList扩容机制.png)
 
 ## Map框架
 
