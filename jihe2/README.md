@@ -1,6 +1,6 @@
 # 集合笔记
 
-## Collection接口
+# Collection接口
 
 ![img_0.png](src/image/Collection.png)
 
@@ -13,30 +13,30 @@ Collection接口的子接口中
 Collection接口 常用方法
 
 ~~~
-*   add: 添加
-*   remove: 删除
-*   contains: 查找元素是否存在
-*   containsAll: 查找多个元素是否都存在
-*   size: 元素个数
-*   isEmpty: 是否未空
-*   clear: 清空
-*   addAll :添加多个元素
-*   removeAll :删除多个元素
+add: 添加
+remove: 删除
+contains: 查找元素是否存在
+containsAll: 查找多个元素是否都存在
+size: 元素个数
+isEmpty: 是否未空
+clear: 清空
+addAll :添加多个元素
+removeAll :删除多个元素
 
 ~~~
 
 Iterator迭代器
 
 ~~~
-* 迭代器执行原理
-* Iterator iterator = coll.iterator();//得到一个集合迭代器
-*
-* while(iterator.hasNext()){ // hesNext() 判断是否还有下一个元素
-*
-*     iterator.next() // next() 下移一位，并将该元素返回
-* }
-*
-* iterator迭代器遍历快捷键 itit
+迭代器执行原理
+Iterator iterator = coll.iterator();//得到一个集合迭代器
+
+while(iterator.hasNext()){ // hesNext() 判断是否还有下一个元素
+
+     iterator.next() // next() 下移一位，并将该元素返回
+}
+
+iterator迭代器遍历快捷键 itit
 ~~~
 
 增强for
@@ -46,31 +46,29 @@ Iterator迭代器
 ~~~
 
 
-## List接口
+#List接口
 
 List接口介绍
 ~~~
- * list集合中元素有序（添加顺序和取出顺序一致），可重复
- * list集合每个元素都对应着索引，索引从0开始
+list集合中元素有序（添加和取出顺序一致），可重复
+list集合每个元素都对应索引，索引从0开始
 ~~~
 
 常用方法
 ~~~
- *  get(int index) 获取指定index位置的元素
- *  set(int index,Object obj) 设置指定index位置的元素为obj
- *  indexOf(Object obj) 返回obj在集合中首次出现的位置
- *  lastIndexOf(Object obj) 返回obj在集合中最后一次出现的位置
- *  subList(int fromIndex,int toIndex) 返回从fromIndex到toIndex位置的子集合，包括前面
+ get(int index)     获取指定index位置的元素
+ set(int index,Object obj)  设置指定index位置的元素为obj
+ indexOf(Object obj)    返回obj在集合中首次出现的位置
+ lastIndexOf(Object obj)    返回obj在集合中最后一次出现的位置
+ subList(int fromIndex,int toIndex)     返回从fromIndex到toIndex位置的子集合，包括前面
 ~~~
 
 List接口练习
 ~~~
-/**
- *  使用 list接口实现类添加三本书，并遍历
- *  要求：
- *      1.按价格排序，从低到高（冒泡排序）
- *
- * */
+ 使用 list接口实现类添加三本书，并遍历
+ 要求：
+       1.按价格排序，从低到高（冒泡排序）
+ 
 public class list接口练习 {
     public static void main(String[] args) {
 
@@ -85,14 +83,10 @@ public class list接口练习 {
             System.out.println(o);
         }
 
-        sort(list);
-
         System.out.println("----------------排序后");
         for (Object o : list) {
             System.out.println(o);
         }
-
-
     }
 
     //冒泡排序，从低到高
@@ -113,7 +107,7 @@ public class list接口练习 {
 class Book {...}
 ~~~
 
-## ArrayList注意事项
+## ArrayList介绍
 
 ~~~
 1.ArrayList是由 数组 来实现数据存储的
@@ -122,13 +116,82 @@ class Book {...}
 
 ArrayList的底层操作机制和源码分析
 ~~~
-1.ArrayList中维护了一个Object类型的数组elementData
-2.当创建ArrayList对象时，如果使用的是无参构造器，则初始elementData的容量为0，第一次添加则扩容elementData为10，如需要再次扩容，则扩容elementData为1.5倍
+1.ArrayList中维护了一个Object类型的数组 elementData
+2.当创建ArrayList对象时，如果使用的是无参构造器，则初始elementData的容量为0，第一次添加则扩容elementData为10，如需要再次扩容，则扩容elementData的1.5倍
 3.如果使用的是指定大小的构造器，则初始elementData容量为指定大小，如果需要扩容，则直接扩容elementData的1.5倍
 ~~~
 
 ![img_0.png](src/image/ArrayList扩容机制.png)
 
+创建ArrayList无参构造器，初始容量elementData默认为0
+~~~
+ArrayList list = new ArrayList();
+
+//1 static Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}; 静态变量
+public ArrayList() {
+    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+}
+~~~
+
+![img_0.png](src/image/ArrayList无参构造器.png)
+
+ArrayList 第一次 add()
+
+~~~
+//1 走 ensureCapacityInternal()确认内部容量方法，此时size默认为0
+public boolean add(E e) {
+    ensureCapacityInternal(size + 1);  // Increments modCount!!
+    elementData[size++] = e;
+    return true;
+}
+
+//2 先走calculateCapacity()计算需要的最小容量容量方法，如3所示，如果elementData为0，则返回最小容量minCapacity和DEFAULT_CAPACITY的较大值，
+//DEFAULT_CAPACITY默认等于10
+//如果elementData中有数据，则直接返回需要的最小容量
+private void ensureCapacityInternal(int minCapacity) {
+    ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+}
+
+//3 calculateCapacity()
+private static int calculateCapacity(Object[] elementData, int minCapacity) {
+    if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+        return Math.max(DEFAULT_CAPACITY, minCapacity);
+    }
+    return minCapacity;
+}
+
+//4 ensureExplicitCapacity()，如果需要的最小容量比数组容量elementData要大，则需要扩容，执行grow()
+private void ensureExplicitCapacity(int minCapacity) {
+    modCount++;
+    // overflow-conscious code
+    if (minCapacity - elementData.length > 0)
+        grow(minCapacity);
+}
+
+//5 grow()，传入需要的最小容量10，这里初始elementData为0，所以newCapcity还为10
+// 如果elementData里面有值，则按elementData的1.5倍进行扩容
+private void grow(int minCapacity) {
+    // overflow-conscious code
+    int oldCapacity = elementData.length;
+    int newCapacity = oldCapacity + (oldCapacity >> 1);
+    if (newCapacity - minCapacity < 0)
+        newCapacity = minCapacity;
+    if (newCapacity - MAX_ARRAY_SIZE > 0)
+        newCapacity = hugeCapacity(minCapacity);
+    // minCapacity is usually close to size, so this is a win:
+    elementData = Arrays.copyOf(elementData, newCapacity);
+}
+
+~~~
+最后返回到add方法，把add的值添加进行数组
+
+![img_0.png](src/image/ArrayList add().png)
+
+ArrayList源码总结
+~~~
+1.创建无参构造方法时，数组的默认容量elementData设置为0
+2.把需要的最小容量和数组容量进行比较，需要的最小容量比比数组容量大，则进行扩容操作
+~~~
 
 ## Vector介绍
 ~~~
@@ -143,9 +206,8 @@ Vector和ArrayList比较
 
 Vector源码解析
 
+无参构造器vector初始化后，初始容量为10
 ~~~
-//无参构造器 创建时
-
 Vector vector = new Vector()
 
 // 1.不传参数，默认走Vector的无参构造器，初始容量给 10
@@ -157,14 +219,14 @@ public Vector() {
 public Vector(int initialCapacity) {
     this(initialCapacity, 0);
 }
-
 ~~~
 
-vector初始化后
+
 
 ![img_0.png](src/image/vector初始化.png)
 
-vector扩容机制
+
+Vector扩容机制
 ~~~
 // 1 判断扩容方法 ensureCapacityHelper(最小容量) 
 
@@ -201,7 +263,7 @@ private void grow(int minCapacity) {
 ## LinkedList介绍
 
 ~~~
-1.LinkedList 底层实现了双向链表和双端队列
+1.LinkedList 底层实现了 双向链表 和 双端队列
 2.可以添加任意元素（元素可以重复），包括null
 3.线程不安全，没有实现同步
 ~~~
@@ -209,9 +271,9 @@ private void grow(int minCapacity) {
 LinkedList底层结构
 ~~~
 1.LinkedList底层维护了一个双向链表
-2.LinkedList中维护了两个属性first和last分别指向首节点和尾节点
-3.每个节点（Node对象），里面又维护了prev、next、item三个属性，通过prev指向前一个，通过next指向后一个，实现双向链表‘
-4.所以LinkedList的元素删除和添加，不是通过数组完成，相较于效率较高
+2.LinkedList中维护了两个属性 first 和 last 分别指向首节点和尾节点
+3.每个节点（Node对象），里面又维护了prev、next、item三个属性，通过prev指向前一个，通过next指向后一个，实现双向链表
+4.所以LinkedList的元素增加和删除，相较于效率较高
 ~~~
 
 双向链表图示
@@ -220,26 +282,24 @@ LinkedList底层结构
 
 
 LinkedList 源码解析
+
+LinkedList 创建无参构造器过程；此时，size为0，first、last为Null
 ~~~
-// LinkedList创建无参构造器过程
     LinkedList linkedList = new LinkedList();
 
 //1 走LinkedList的无参构造器 初始化 size=0
     public LinkedList() {
     }
     
+//2   
     transient int size = 0;
- 
 ~~~
-
-此时，size为0，first、last为Null
 
 ![img_0.png](src/image/LinkedList创建无参构造器过程.png)
 
-第一次添加 add()方法解析
+add()方法解析（第一次添加）
 ~~~
-
-    linkedList.add(12);
+linkedList.add(12);
 
 //1 走 linkLast(e)方法
     public boolean add(E e) {
@@ -247,7 +307,7 @@ LinkedList 源码解析
         return true;
     }
 
-//2 last=null，l也为null，此时first指向新节点，last也指向新节点
+//2 last=null，l也为null，此时first、last都指向新节点
     void linkLast(E e) {
         final Node<E> l = last;
         final Node<E> newNode = new Node<>(l, e, null);
@@ -261,14 +321,12 @@ LinkedList 源码解析
     }
 ~~~
 
-linkedList里面有值，last不为null，此时新节点的prev指向最后节点，最后节点的next指向新节点
+add方法里面有值，last不为null，此时新节点的prev指向最后节点，最后节点的next指向新节点
 
-LinkedList的删除方法
+LinkedList的remove() ，默认删除首节点
 
 ~~~
-// remove() 默认删除第一个节点
-
-//1
+//1 走 removeFirst()方法
 public E remove() {
     return removeFirst();
 }
@@ -281,7 +339,9 @@ public E removeFirst() {
     return unlinkFirst(f);
 }
 
-//3 unlinkFirst() 删除第一个节点
+//3 unlinkFirst() 删除首节点f，先把f的值赋给element，再把f.next赋给一个新next节点，把f的值和next赋为空，
+//此时first.next指向新next节点，再把next的prev赋为空，该操作就是把first指向首节点的next，再把首节点的prev赋为空
+
 private E unlinkFirst(Node<E> f) {
     // assert f == first && f != null;
     final E element = f.item;
@@ -297,6 +357,223 @@ private E unlinkFirst(Node<E> f) {
     modCount++;
     return element;
 }
+~~~
+
+ArrayList 和 LinkedList 比较
+
+![img_0.png](src/image/ArrayList和LinkedList比较.png)
+
+如何选择？
+~~~
+1.如果改查多，选择ArrayList
+2.如果增删多，选择LinkedList
+3.一般大部分都是改查，大部分情况都会选ArrayList
+~~~
+
+#set接口
+
+~~~
+1.无序（存放和取出的顺序不一致），没有索引，不能用普通for循环遍历
+2.不允许重复元素，最多有一个null
+3.取出的顺序固定，按hashCode排列
+~~~
+
+## HashSet介绍
+
+~~~
+1.HashSet的底层是HashMap，HashMap的底层是：数组+链表+红黑树
+~~~
+
+例：数组+链表
+~~~
+public class HashSet源码解析 {
+    public static void main(String[] args) {
+
+        //创建Node[] 数组
+        Node[] table = new Node[16];
+
+        //创建节点
+        Node john = new Node("john", null);
+        table[2] = john;
+        
+        Node jack = new Node("jack", null);
+        
+        //挂载jack到john的next
+        john.next=jack;
+    }
+}
+
+class Node { //节点类，存储数据，指向下一个节点
+    Object item;
+    Node next;
+    public Node(Object item, Node next) {//有参构造
+        this.item = item;
+        this.next = next;
+    }
+}
+~~~
+
+结构图示
+
+![img_0.png](src/image/数组+链表.png)
+
+
+## HashMap介绍
+
+~~~
+1.添加一个元素时，先得到hash值，会转成索引值
+2.找到存储数据表table，看这个索引位置是否已经存放的有元素，如果没有直接加入
+3.如果有，调用equals比较，如果相同就不添加，如果不相同就添加到最后
+4.在java8中，如果一条链表的元素个数到达 TREEIFY_THRESHOLD=8，并且table>=MIN_TREEIFY_CAPACITY = 64，就会进行树化（红黑树）
+~~~
+
+HashSet源码
+
+HashSet执行无参构造器，new了一个HashMap
+~~~
+HashSet set = new HashSet();
+
+public HashSet() {
+    map = new HashMap<>();
+}
+~~~
+执行add方法，第一次添加，扩容到16个空间
+~~~
+//1 执行add()方法
+public boolean add(E e) {
+    return map.put(e, PRESENT)==null; //static PRESENT = new Object();PRESENT表示静态共享
+}
+
+//2 执行put()方法，hash(key)表示获取key的hash值
+public V put(K key, V value) {
+    return putVal(hash(key), key, value, false, true);
+}
+
+//3 putVal()，对数组进行扩容，存入节点
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
+        //1 定义辅助变量：tab、p、n、i
+        Node<K,V>[] tab; Node<K,V> p; int n, i;
+        
+        //Node<K,V>[] table; HashMap中的一个Node[]
+        //2 if判断：如果table为null或者长度为0，就执行resize()方法，进行第一次扩容，到16个空间
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        
+        //3 根据hash值去计算key应该存放到table的哪个索引位置，并把这个位置的对象赋值给p
+        //如果p为null，表示没有存放元素，就创建一个Node(key="item",value="PRESENT")
+        //如果不为null，表示该索引处已经存放元素，把新节点挂载到最后
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            Node<K,V> e; K k;
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;
+            else if (p instanceof TreeNode)
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+    }
+    
+//4 resize() 扩容方法
+final Node<K,V>[] resize() {
+        Node<K,V>[] oldTab = table;
+        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        int oldThr = threshold;
+        int newCap, newThr = 0;
+        if (oldCap > 0) {
+            if (oldCap >= MAXIMUM_CAPACITY) {
+                threshold = Integer.MAX_VALUE;
+                return oldTab;
+            }
+            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+                     oldCap >= DEFAULT_INITIAL_CAPACITY)
+                newThr = oldThr << 1; // double threshold
+        }
+        else if (oldThr > 0) // initial capacity was placed in threshold
+            newCap = oldThr;
+        else {               // zero initial threshold signifies using defaults
+            newCap = DEFAULT_INITIAL_CAPACITY;
+            newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+        }
+        if (newThr == 0) {
+            float ft = (float)newCap * loadFactor;
+            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
+                      (int)ft : Integer.MAX_VALUE);
+        }
+        threshold = newThr;
+        @SuppressWarnings({"rawtypes","unchecked"})
+        Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+        table = newTab;
+        if (oldTab != null) {
+            for (int j = 0; j < oldCap; ++j) {
+                Node<K,V> e;
+                if ((e = oldTab[j]) != null) {
+                    oldTab[j] = null;
+                    if (e.next == null)
+                        newTab[e.hash & (newCap - 1)] = e;
+                    else if (e instanceof TreeNode)
+                        ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
+                    else { // preserve order
+                        Node<K,V> loHead = null, loTail = null;
+                        Node<K,V> hiHead = null, hiTail = null;
+                        Node<K,V> next;
+                        do {
+                            next = e.next;
+                            if ((e.hash & oldCap) == 0) {
+                                if (loTail == null)
+                                    loHead = e;
+                                else
+                                    loTail.next = e;
+                                loTail = e;
+                            }
+                            else {
+                                if (hiTail == null)
+                                    hiHead = e;
+                                else
+                                    hiTail.next = e;
+                                hiTail = e;
+                            }
+                        } while ((e = next) != null);
+                        if (loTail != null) {
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+                        if (hiTail != null) {
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+                    }
+                }
+            }
+        }
+        return newTab;
+    }
 
 ~~~
 
@@ -307,14 +584,6 @@ private E unlinkFirst(Node<E> f) {
 
 
 
-
-
-
-
-
-
-
-
-## Map框架
+# Map
 
 ![img_0.png](src/image/Map.png)

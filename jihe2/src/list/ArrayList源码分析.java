@@ -6,8 +6,8 @@ public class ArrayList源码分析 {
     public static void main(String[] args) {
 
 
-        //使用有参构造器创建对象
-        ArrayList list = new ArrayList(8);
+        //使用无参构造器创建对象
+        ArrayList list = new ArrayList();
 
         //添加10个数据
         for (int i = 0; i < 10; i++) {
