@@ -421,10 +421,10 @@ class Node { //节点类，存储数据，指向下一个节点
 ## HashMap介绍
 
 ~~~
-1.添加一个元素时，先得到hash值，会转成索引值
-2.找到存储数据表table，看这个索引位置是否已经存放的有元素，如果没有直接加入
-3.如果有，调用equals比较，如果相同就不添加，如果不相同就添加到最后
-4.在java8中，如果一条链表的元素个数到达 TREEIFY_THRESHOLD=8，并且table>=MIN_TREEIFY_CAPACITY = 64，就会进行树化（红黑树）
+1.添加一个元素时，先计算hash值，再计算出索引值
+2.找到存储数据表table，判断这个索引位置是否已经存放的有元素，如果没有直接加入
+3.如果有，就循环遍历链表比较是否有元素相同，如果没有就挂载到最后，如果有就不添加
+4.在java8中，如果一条链表的元素个数到达 TREEIFY_THRESHOLD=8，并且table数组容量>=MIN_TREEIFY_CAPACITY = 64，就会进行树化（红黑树）
 ~~~
 
 HashSet源码
@@ -437,7 +437,7 @@ public HashSet() {
     map = new HashMap<>();
 }
 ~~~
-执行add方法，第一次添加，扩容到16个空间
+执行add方法，第一次添加，数组table扩容到16，阈值threshold扩容到16*0.75=12，数组添加到达阈值就会进行扩容操作
 ~~~
 //1 执行add()方法
 public boolean add(E e) {
@@ -454,31 +454,37 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
         //1 定义辅助变量：tab、p、n、i
         Node<K,V>[] tab; Node<K,V> p; int n, i;
         
-        //Node<K,V>[] table; HashMap中的一个Node[]
-        //2 if判断：如果table为null或者长度为0，就执行resize()方法，进行第一次扩容，到16个空间
+        //Node<K,V>[] table; table等于HashMap中Node[]数组
+        //2 先判断Node[]数组是否为空，如果为空，进行第一次扩容，到16个空间
         if ((tab = table) == null || (n = tab.length) == 0)
             n = (tab = resize()).length;
         
-        //3 根据hash值去计算key应该存放到table的哪个索引位置，并把这个位置的对象赋值给p
-        //如果p为null，表示没有存放元素，就创建一个Node(key="item",value="PRESENT")
-        //如果不为null，表示该索引处已经存放元素，把新节点挂载到最后
+        //3 根据hash值去计算key应该存放到table的哪个索引位置
+        //如果该索引位置为null，表示该索引处没有存放元素，则把新节点存放进去 Node(key="item",value="PRESENT")
         if ((p = tab[i = (n - 1) & hash]) == null)
             tab[i] = newNode(hash, key, value, null);
         else {
+            //如果该索引处不为null，判断该索引处和新加节点的hash值和key是否相同，如果相同不添加，直接退出
             Node<K,V> e; K k;
             if (p.hash == hash &&
                 ((k = p.key) == key || (key != null && key.equals(k))))
                 e = p;
             else if (p instanceof TreeNode)
+                //判断是否为红黑树
                 e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
             else {
+                //该索引处和新加节点的hash值、key不同，则循环遍历该索引处的链表，如果没有相同的值，则挂载到最后
                 for (int binCount = 0; ; ++binCount) {
+                    //挂载到最后，直接退出
                     if ((e = p.next) == null) {
                         p.next = newNode(hash, key, value, null);
+                        //判断链表是否达到8个节点，如果达到就进行树化（红黑树），还要在treeifyBin()判断：数组容量是否达到64
+                        // treeifyBin方法中判断条件：(n = tab.length) < MIN_TREEIFY_CAPACITY(64))
                         if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
                             treeifyBin(tab, hash);
                         break;
                     }
+                    //找到相同的值，直接退出
                     if (e.hash == hash &&
                         ((k = e.key) == key || (key != null && key.equals(k))))
                         break;
@@ -577,7 +583,15 @@ final Node<K,V>[] resize() {
 
 ~~~
 
+## LinkedHashSet
 
+~~~
+1.LinkedHashSet 继承 HashSet，实现Set接口
+2.LinkedHashSet 底层是一个LinkedHashMap，底层维护了一个（ 数组 + 双向链表 ）
+3.LinkedHashSet 根据元素的hashCode值来决定元素的存储位置，同时使用链表维护元素的次序，
+  这使得元素看起来是以插入顺序保存的
+4.LinkedHashSet不允许添加重复元素
+~~~
 
 
 
