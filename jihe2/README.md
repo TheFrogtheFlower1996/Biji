@@ -437,19 +437,19 @@ public HashSet() {
     map = new HashMap<>();
 }
 ~~~
-执行add方法，第一次添加，数组table扩容到16，阈值threshold扩容到16*0.75=12，数组添加到达阈值就会进行扩容操作
+执行add方法，第一次添加，数组table扩容到16，阈值threshold扩容到16*0.75=12，数组达到达阈值就会进行扩容操作
 ~~~
 //1 执行add()方法
 public boolean add(E e) {
-    return map.put(e, PRESENT)==null; //static PRESENT = new Object();PRESENT表示静态共享
+    return map.put(e, PRESENT)==null; //static PRESENT = new Object(); PRESENT表示静态共享
 }
 
-//2 执行put()方法，hash(key)表示获取key的hash值
+//2 执行put()方法，hash(key)：获取hash值
 public V put(K key, V value) {
     return putVal(hash(key), key, value, false, true);
 }
 
-//3 putVal()，对数组进行扩容，存入节点
+//3 putVal()：执行resize()扩容方法，存入节点
 final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
         //1 定义辅助变量：tab、p、n、i
         Node<K,V>[] tab; Node<K,V> p; int n, i;
@@ -586,18 +586,30 @@ final Node<K,V>[] resize() {
 ## LinkedHashSet介绍
 ~~~
 1.LinkedHashSet 继承 HashSet，实现Set接口
-2.LinkedHashSet 底层是一个LinkedHashMap，底层维护了一个（ 数组 + 双向链表 ）
+2.LinkedHashSet 底层是一个 LinkedHashMap（HashMap的子类），底层维护了一个（ 数组 + 双向链表 ）
 3.LinkedHashSet 根据元素的hashCode值来决定元素的存储位置，同时使用链表维护元素的次序，这使得元素看起来是以插入顺序保存的
 4.LinkedHashSet不允许添加重复元素
 ~~~
 
+![img_0.png](src/image/LinkedHashMap结构.png)
+
+LinkedHashMap 第一次添加，数组容量扩容到16，数组是HashMap$Node[]类型，存放的元素/数据是LinkedHashMap$Entry类型，继承关系
+
+![img_0.png](src/image/LinkedHashMap添加.png)
+
+![img_0.png](src/image/linkedHashMap解析1.png)
+
 说明
 ~~~
-1.在LinkedHashSet 中维护了一个hash表和双向链表(LinkedHashSet有head和tail)
-2.每一个节点有pre和next属性，这样可以形成双向链表
-3.在添加每一个元素时，先求hash值，再求索引。确认该元素在hashTable的位置，然后将添加的元素加入到双向链表(如果存在，不添加)
+1.在LinkedHashSet 中维护了一个hash表和双向链表(LinkedHashSet有 head 和 tail )
+2.每一个节点有before和after属性，这样可以形成双向链表
+3.在添加每一个元素时，先求hash值，再求索引。确认该元素在table的位置，然后将添加的元素加入到双向链表(如果存在，不添加)
 4.这样遍历LinkedHashSet也能确保插入顺序和遍历顺序一样
 ~~~
+
+LinkedHashMap 存储图示
+
+![img_0.png](src/image/linkedHashMap解析.png)
 
 
 
