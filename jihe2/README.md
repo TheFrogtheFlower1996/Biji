@@ -583,17 +583,21 @@ final Node<K,V>[] resize() {
 
 ~~~
 
-## LinkedHashSet
-
+## LinkedHashSet介绍
 ~~~
 1.LinkedHashSet 继承 HashSet，实现Set接口
 2.LinkedHashSet 底层是一个LinkedHashMap，底层维护了一个（ 数组 + 双向链表 ）
-3.LinkedHashSet 根据元素的hashCode值来决定元素的存储位置，同时使用链表维护元素的次序，
-  这使得元素看起来是以插入顺序保存的
+3.LinkedHashSet 根据元素的hashCode值来决定元素的存储位置，同时使用链表维护元素的次序，这使得元素看起来是以插入顺序保存的
 4.LinkedHashSet不允许添加重复元素
 ~~~
 
-
+说明
+~~~
+1.在LinkedHashSet 中维护了一个hash表和双向链表(LinkedHashSet有head和tail)
+2.每一个节点有pre和next属性，这样可以形成双向链表
+3.在添加每一个元素时，先求hash值，再求索引。确认该元素在hashTable的位置，然后将添加的元素加入到双向链表(如果存在，不添加)
+4.这样遍历LinkedHashSet也能确保插入顺序和遍历顺序一样
+~~~
 
 
 
