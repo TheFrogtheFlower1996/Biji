@@ -459,12 +459,12 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
         if ((tab = table) == null || (n = tab.length) == 0)
             n = (tab = resize()).length;
         
-        //3 根据hash值去计算key应该存放到table的哪个索引位置
+        //3 根据hash值去计算key应该存放到table的哪个首索引位置
         //如果该索引位置为null，表示该索引处没有存放元素，则把新节点存放进去 Node(key="item",value="PRESENT")
         if ((p = tab[i = (n - 1) & hash]) == null)
             tab[i] = newNode(hash, key, value, null);
         else {
-            //如果该索引处不为null，判断该索引处和新加节点的hash值和key是否相同，如果相同不添加，直接退出
+            //如果该索引处不为null，判断该索引处和新加节点的hash值和equals是否相同，如果相同不添加，直接退出
             Node<K,V> e; K k;
             if (p.hash == hash &&
                 ((k = p.key) == key || (key != null && key.equals(k))))
@@ -611,9 +611,148 @@ LinkedHashMap 存储图示
 
 ![img_0.png](src/image/linkedHashMap解析.png)
 
-
+重写equals和hashCode方法比较
+~~~
+1.只重写hashCode，计算出的hash值相同，则计算出的数组首位置不为null，又因为equals不同，直接添加到该数组位置的链表后面
+2.只重写equals，计算出hash值不相同，则计算出的数组首位置不相同，该位置为null，则直接添加到首位置
+~~~
 
 
 # Map
 
 ![img_0.png](src/image/Map.png)
+
+~~~
+1.Map用于存放具有映射关系的双列数据：key-value 
+2.Map中的key和value可以是任何引用类型的数据，会封装到HashMap$Node对象中
+3.Map中的key值不允许重复，value值可以重复，（key为null，只能有一个）
+4.常用String类作为Map的key
+5.key和vaule存在单向一对一关系，即通过指定的key总能找到对应的value
+~~~
+
+map常用方法
+~~~
+remove(Object key) 删除
+size() 返回元素个数
+isEmpty() 判断是否为空
+clear() 清空
+get(Object key) 获取val
+
+containsKey 查找键是否存在
+keySet 获取键集合
+entrySet 获取所有的关系 k-v
+values 获取值集合
+~~~
+
+map遍历方式：
+1. keySet 获取key的Set集合
+2. values 获取value的Collection集合
+3. EntrySet 获取key-value的Object集合，再向下转型为Entry，Entry接口中getKey()和getValue()方法
+~~~
+
+public class Map六大遍历方式 {
+    public static void main(String[] args) {
+
+        HashMap map = new HashMap();
+        map.put("邓超","孙俪");
+        map.put("张三","李四");
+        map.put("黄晓明","李颖");
+        map.put("胡歌",null);
+        map.put(null,"护士");
+
+        // keySet获取key集合
+        Set set = map.keySet();
+
+        // 1 增强for
+        for (Object obj : set) {
+            System.out.println(obj);
+        }
+        // 2 迭代器 迭代key
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Object next = iterator.next();
+            System.out.println(next);
+        }
+
+        //values获取value集合
+        Collection values = map.values();
+
+        // 3 values()取出值集合
+        for (Object value : values) {
+            System.out.println(value);
+        }
+
+        // 4 迭代器 迭代值
+        Iterator iterator1 = values.iterator();
+        while (iterator1.hasNext()) {
+            Object next = iterator1.next();
+            System.out.println(next);
+        }
+
+        // 5 EntrySet
+        Set set1 = map.entrySet();
+
+        for (Object o : set1) {
+            //向下转型 Object 转 Entry
+            Map.Entry o1 = (Map.Entry) o;
+            Object key = o1.getKey();
+            Object value = o1.getValue();
+            System.out.println(key +"-" +value);
+        }
+        
+        // 6 迭代器
+        Iterator iterator2 = set1.iterator();
+        while (iterator2.hasNext()) {
+
+        }
+    }
+}
+
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
