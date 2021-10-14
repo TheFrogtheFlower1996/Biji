@@ -28,6 +28,8 @@ import java.util.Map;
 public class collection常用方法 {
     public static void main(String[] args) {
 
+
+
         List list = new ArrayList();
         list.add("zhangsan");
         list.add(2);

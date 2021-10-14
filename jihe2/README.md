@@ -4,31 +4,30 @@
 
 ![img_0.png](src/image/Collection.png)
 
-Collection接口的子接口中
+Collection子接口中
 ~~~
  List：可重复 有序
- Set：不可重复 无序
+ Set： 不可重复 无序
 ~~~
 
-Collection接口 常用方法
+Collection 常用方法
+
+~~~ java
+add 添加
+remove 删除
+contains 查找元素是否存在
+containsAll 查找多个元素是否都存在
+size 元素个数
+isEmpty 是否未空
+clear 清空
+addAll 添加多个元素
+removeAll 删除多个元素
 
 ~~~
-add: 添加
-remove: 删除
-contains: 查找元素是否存在
-containsAll: 查找多个元素是否都存在
-size: 元素个数
-isEmpty: 是否未空
-clear: 清空
-addAll :添加多个元素
-removeAll :删除多个元素
 
-~~~
+Iterator 迭代器原理
 
-Iterator迭代器
-
-~~~
-迭代器执行原理
+~~~ java
 Iterator iterator = coll.iterator();//得到一个集合迭代器
 
 while(iterator.hasNext()){ // hesNext() 判断是否还有下一个元素
@@ -36,7 +35,7 @@ while(iterator.hasNext()){ // hesNext() 判断是否还有下一个元素
      iterator.next() // next() 下移一位，并将该元素返回
 }
 
-iterator迭代器遍历快捷键 itit
+// iterator迭代器遍历快捷键 itit
 ~~~
 
 增强for
@@ -46,25 +45,25 @@ iterator迭代器遍历快捷键 itit
 ~~~
 
 
-#List接口
+#List
 
-List接口介绍
+List 介绍
 ~~~
-list集合中元素有序（添加和取出顺序一致），可重复
 list集合每个元素都对应索引，索引从0开始
+list集合中元素有序（添加和取出顺序一致），可重复
 ~~~
 
 常用方法
 ~~~
- get(int index)     获取指定index位置的元素
- set(int index,Object obj)  设置指定index位置的元素为obj
- indexOf(Object obj)    返回obj在集合中首次出现的位置
- lastIndexOf(Object obj)    返回obj在集合中最后一次出现的位置
- subList(int fromIndex,int toIndex)     返回从fromIndex到toIndex位置的子集合，包括前面
+ get 获取
+ set 修改
+ indexOf 返回在集合中首次出现的位置
+ lastIndexOf 返回在集合中最后一次出现的位置
+ subList 返回从fromIndex到toIndex位置的子集合，包括前面
 ~~~
 
 List接口练习
-~~~
+~~~ java
  使用 list接口实现类添加三本书，并遍历
  要求：
        1.按价格排序，从低到高（冒泡排序）
@@ -107,14 +106,14 @@ public class list接口练习 {
 class Book {...}
 ~~~
 
-## ArrayList介绍
+## ArrayList
 
-~~~
+~~~ java
 1.ArrayList是由 数组 来实现数据存储的
 2.ArrayList等同于Vector，ArrayList是线程不安全(执行效率高)；在多线程情况下，不建议使用ArrayList
 ~~~
 
-ArrayList的底层操作机制和源码分析
+ArrayList 底层机制 和 源码分析
 ~~~
 1.ArrayList中维护了一个Object类型的数组 elementData
 2.当创建ArrayList对象时，如果使用的是无参构造器，则初始elementData的容量为0，第一次添加则扩容elementData为10，如需要再次扩容，则扩容elementData的1.5倍
@@ -123,36 +122,25 @@ ArrayList的底层操作机制和源码分析
 
 ![img_0.png](src/image/ArrayList扩容机制.png)
 
-创建ArrayList无参构造器，初始容量elementData默认为0
-~~~
-ArrayList list = new ArrayList();
-
-//1 static Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}; 静态变量
-public ArrayList() {
-    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
-}
-~~~
 
 ![img_0.png](src/image/ArrayList无参构造器.png)
 
-ArrayList 第一次 add()
-
-~~~
-//1 走 ensureCapacityInternal()确认内部容量方法，此时size默认为0
+ArrayList add() 扩容机制：如果 需要的最小容量 比 默认容量大，执行grow(int minCapacity)方法扩容
+~~~ java
+//1 走 ensureCapacityInternal()方法 确认内部容量，此时size默认为0，初始容量elementData默认为0
 public boolean add(E e) {
-    ensureCapacityInternal(size + 1);  // Increments modCount!!
+    ensureCapacityInternal(size + 1);  // minCapacity= size + 1 = 1
     elementData[size++] = e;
     return true;
 }
 
-//2 先走calculateCapacity()计算需要的最小容量容量方法，如3所示，如果elementData为0，则返回最小容量minCapacity和DEFAULT_CAPACITY的较大值，
-//DEFAULT_CAPACITY默认等于10
-//如果elementData中有数据，则直接返回需要的最小容量
+//2 先走 calculateCapacity()方法 计算容量，此时初始容量elementData默认为0，需要的最小容量minCapacity为1
 private void ensureCapacityInternal(int minCapacity) {
     ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
 }
 
-//3 calculateCapacity()
+//3 走calculateCapacity()方法，DEFAULTCAPACITY_EMPTY_ELEMENTDATA默认为0，DEFAULT_CAPACITY默认容量为10
+//  if判断：初始容量elementData为0，则返回DEFAULT_CAPACITY=10
 private static int calculateCapacity(Object[] elementData, int minCapacity) {
     if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
         return Math.max(DEFAULT_CAPACITY, minCapacity);
@@ -160,7 +148,7 @@ private static int calculateCapacity(Object[] elementData, int minCapacity) {
     return minCapacity;
 }
 
-//4 ensureExplicitCapacity()，如果需要的最小容量比数组容量elementData要大，则需要扩容，执行grow()
+//4 走ensureExplicitCapacity() 判断是否需要扩容，此时需要的最小容量minCapacity=10，如果需要的最小容量比初始容量elementData要大，执行grow()扩容
 private void ensureExplicitCapacity(int minCapacity) {
     modCount++;
     // overflow-conscious code
@@ -168,8 +156,8 @@ private void ensureExplicitCapacity(int minCapacity) {
         grow(minCapacity);
 }
 
-//5 grow()，传入需要的最小容量10，这里初始elementData为0，所以newCapcity还为10
-// 如果elementData里面有值，则按elementData的1.5倍进行扩容
+//5 走grow()扩容方法，传入需要的最小容量10，这里初始elementData为0，所以newCapcity还为10
+//  如果elementData里面有值，则按elementData的1.5倍进行扩容
 private void grow(int minCapacity) {
     // overflow-conscious code
     int oldCapacity = elementData.length;
@@ -189,11 +177,11 @@ private void grow(int minCapacity) {
 
 ArrayList源码总结
 ~~~
-1.创建无参构造方法时，数组的默认容量elementData设置为0
-2.把需要的最小容量和数组容量进行比较，需要的最小容量比比数组容量大，则进行扩容操作
+1.创建无参构造方法时，数组的容量elementData默认为0
+2.如果 需要的最小容量（minCapacity）比 默认容量（elementData） 大，则进行扩容操作
 ~~~
 
-## Vector介绍
+## Vector
 ~~~
 1.Vector底层也是一个对象数组，protected Object[] elementData;
 2.Vector是线程同步的，即线程安全，Vector类的操作方法带有 synchronized
@@ -204,30 +192,25 @@ Vector和ArrayList比较
 
 ![img_0.png](src/image/Vector和ArrayList比较.png)
 
-Vector源码解析
+Vector 源码解析
 
-无参构造器vector初始化后，初始容量为10
-~~~
-Vector vector = new Vector()
-
+无参构造器vector初始化后，初始容量为10，后面按2倍扩容
+~~~ java
 // 1.不传参数，默认走Vector的无参构造器，初始容量给 10
 public Vector() {
     this(10);
 }
-
 // 2
 public Vector(int initialCapacity) {
     this(initialCapacity, 0);
 }
 ~~~
 
-
-
 ![img_0.png](src/image/vector初始化.png)
 
 
-Vector扩容机制
-~~~
+Vector 扩容机制
+~~~ java
 // 1 判断扩容方法 ensureCapacityHelper(最小容量) 
 
 public synchronized boolean add(E e) {
@@ -237,14 +220,14 @@ public synchronized boolean add(E e) {
     return true;
 }
 
-// 2 判断条件：当需要的最小容量比数组容量大时，执行grow()方法扩容
+// 2 判断条件：当 需要的最小容量比数组容量大时，执行grow()方法扩容，
 
 private void ensureCapacityHelper(int minCapacity) {
     if (minCapacity - elementData.length > 0)
         grow(minCapacity);
 }
 
-// 3 grow()方法
+// 3 grow()方法，扩容到2倍
 
 private void grow(int minCapacity) {
     int oldCapacity = elementData.length;
@@ -259,18 +242,15 @@ private void grow(int minCapacity) {
 
 
 ~~~
-
-## LinkedList介绍
-
+## LinkedList
 ~~~
-1.LinkedList 底层实现了 双向链表 和 双端队列
+1.LinkedList 底层实现了（ 双向链表 + 双端队列 ）
 2.可以添加任意元素（元素可以重复），包括null
 3.线程不安全，没有实现同步
 ~~~
-
-LinkedList底层结构
+LinkedList 底层结构
 ~~~
-1.LinkedList底层维护了一个双向链表
+1.LinkedList 底层维护了一个双向链表
 2.LinkedList中维护了两个属性 first 和 last 分别指向首节点和尾节点
 3.每个节点（Node对象），里面又维护了prev、next、item三个属性，通过prev指向前一个，通过next指向后一个，实现双向链表
 4.所以LinkedList的元素增加和删除，相较于效率较高
@@ -284,21 +264,19 @@ LinkedList底层结构
 LinkedList 源码解析
 
 LinkedList 创建无参构造器过程；此时，size为0，first、last为Null
-~~~
-    LinkedList linkedList = new LinkedList();
+~~~ java
 
 //1 走LinkedList的无参构造器 初始化 size=0
-    public LinkedList() {
-    }
+    public LinkedList() {}
     
-//2   
-    transient int size = 0;
+//  transient int size = 0;
+    
 ~~~
 
 ![img_0.png](src/image/LinkedList创建无参构造器过程.png)
 
-add()方法解析（第一次添加）
-~~~
+LinkedList 扩容机制
+~~~ java
 linkedList.add(12);
 
 //1 走 linkLast(e)方法
@@ -307,7 +285,9 @@ linkedList.add(12);
         return true;
     }
 
-//2 last=null，l也为null，此时first、last都指向新节点
+//2 第一次添加： last=null，l也为null，此时first、last都指向新节点
+    多次添加：last不为null，此时新节点的prev指向最后节点，最后节点的next指向新节点
+    
     void linkLast(E e) {
         final Node<E> l = last;
         final Node<E> newNode = new Node<>(l, e, null);
@@ -320,12 +300,8 @@ linkedList.add(12);
         modCount++;
     }
 ~~~
-
-add方法里面有值，last不为null，此时新节点的prev指向最后节点，最后节点的next指向新节点
-
-LinkedList的remove() ，默认删除首节点
-
-~~~
+remove()方法，默认删除首节点
+~~~ java
 //1 走 removeFirst()方法
 public E remove() {
     return removeFirst();
@@ -370,7 +346,7 @@ ArrayList 和 LinkedList 比较
 3.一般大部分都是改查，大部分情况都会选ArrayList
 ~~~
 
-#set接口
+#Set
 
 ~~~
 1.无序（存放和取出的顺序不一致），没有索引，不能用普通for循环遍历
@@ -378,14 +354,14 @@ ArrayList 和 LinkedList 比较
 3.取出的顺序固定，按hashCode排列
 ~~~
 
-## HashSet介绍
+## HashSet
 
 ~~~
 1.HashSet的底层是HashMap，HashMap的底层是：数组+链表+红黑树
 ~~~
 
 例：数组+链表
-~~~
+~~~ java
 public class HashSet源码解析 {
     public static void main(String[] args) {
 
@@ -417,7 +393,6 @@ class Node { //节点类，存储数据，指向下一个节点
 
 ![img_0.png](src/image/数组+链表.png)
 
-
 ## HashMap介绍
 
 ~~~
@@ -430,15 +405,13 @@ class Node { //节点类，存储数据，指向下一个节点
 HashSet源码
 
 HashSet执行无参构造器，new了一个HashMap
-~~~
-HashSet set = new HashSet();
-
+~~~ java
 public HashSet() {
     map = new HashMap<>();
 }
 ~~~
-执行add方法，第一次添加，数组table扩容到16，阈值threshold扩容到16*0.75=12，数组达到达阈值就会进行扩容操作
-~~~
+执行add方法，第一次添加，数组table扩容到16，阈值threshold扩容到16*0.75=12，数组达到达阈值就会执行resize()方法扩容
+~~~ java
 //1 执行add()方法
 public boolean add(E e) {
     return map.put(e, PRESENT)==null; //static PRESENT = new Object(); PRESENT表示静态共享
@@ -580,15 +553,14 @@ final Node<K,V>[] resize() {
         }
         return newTab;
     }
-
 ~~~
 
-## LinkedHashSet介绍
+## LinkedHashSet
 ~~~
 1.LinkedHashSet 继承 HashSet，实现Set接口
 2.LinkedHashSet 底层是一个 LinkedHashMap（HashMap的子类），底层维护了一个（ 数组 + 双向链表 ）
 3.LinkedHashSet 根据元素的hashCode值来决定元素的存储位置，同时使用链表维护元素的次序，这使得元素看起来是以插入顺序保存的
-4.LinkedHashSet不允许添加重复元素
+4.LinkedHashSet 不允许添加重复元素
 ~~~
 
 ![img_0.png](src/image/LinkedHashMap结构.png)
@@ -600,7 +572,7 @@ LinkedHashMap 第一次添加，数组容量扩容到16，数组是HashMap$Node[
 ![img_0.png](src/image/linkedHashMap解析1.png)
 
 说明
-~~~
+~~~ java
 1.在LinkedHashSet 中维护了一个hash表和双向链表(LinkedHashSet有 head 和 tail )
 2.每一个节点有before和after属性，这样可以形成双向链表
 3.在添加每一个元素时，先求hash值，再求索引。确认该元素在table的位置，然后将添加的元素加入到双向链表(如果存在，不添加)
@@ -617,12 +589,11 @@ LinkedHashMap 存储图示
 2.只重写equals，计算出hash值不相同，则计算出的数组首位置不相同，该位置为null，则直接添加到首位置
 ~~~
 
-
-# Map
+# Map接口
 
 ![img_0.png](src/image/Map.png)
 
-~~~
+~~~ java
 1.Map用于存放具有映射关系的双列数据：key-value 
 2.Map中的key和value可以是任何引用类型的数据，会封装到HashMap$Node对象中
 3.Map中的key值不允许重复，value值可以重复，（key为null，只能有一个）
@@ -630,8 +601,9 @@ LinkedHashMap 存储图示
 5.key和vaule存在单向一对一关系，即通过指定的key总能找到对应的value
 ~~~
 
-map常用方法
-~~~
+Map常用方法
+
+~~~ java
 remove(Object key) 删除
 size() 返回元素个数
 isEmpty() 判断是否为空
@@ -643,12 +615,11 @@ keySet 获取键集合
 entrySet 获取所有的关系 k-v
 values 获取值集合
 ~~~
-
-map遍历方式：
-1. keySet 获取key的Set集合
-2. values 获取value的Collection集合
-3. EntrySet 获取key-value的Object集合，再向下转型为Entry，Entry接口中getKey()和getValue()方法
-~~~
+Map遍历方式：
+1. keySet() 获取key的Set集合
+2. EntrySet() 获取key-value的Set集合，再向下转型为Entry，使用Entry接口中 getKey() 和 getValue()方法获取 k-v
+3. values() 获取value的Collection集合
+~~~ java
 
 public class Map六大遍历方式 {
     public static void main(String[] args) {
@@ -710,6 +681,103 @@ public class Map六大遍历方式 {
 
 ~~~
 
+## HashMap
+
+HashMap源码解析
+
+~~~ java
+1.执行无参构造器，初始化 （负载系数）loadFactor = 0.75
+static final float DEFAULT_LOAD_FACTOR = 0.75f;
+public HashMap() {
+    this.loadFactor = DEFAULT_LOAD_FACTOR;
+}
+
+2.走putVal()方法，传递key、value、key的hash值
+public V put(K key, V value) {
+    return putVal(hash(key), key, value, false, true);
+}
+
+3.整个集合最重要的一个方法putVal()
+  情况一：HashMap刚初始化，如果table容量为空，进行第一次resize()扩容操作；通过hash值计算出索引位置，如果该索引处为null，直接将node节点存入
+  情况二：如果tabel容量不为空，计算出的索引位置为null，直接存入
+  情况三：如果tabel容量不为空，计算出的索引位置不为null；如果该索引处 key的hash值 和 equlas() 和存入相同，则旧的value值被替换
+  情况四：如果tabel容量不为空，计算出的索引位置不为null；如果该索引处 key的hash值 和 equlas() 和存入的不相同，则遍历该索引处的链表继续比较，有相同则替换value，无相同则添加到最后
+  
+  扩容机制：当table容量为0时，第一次扩容到16，阈值为12，每次添加节点后都要判断 需要的最小容量是否超过阈值，超过则执行resize()方法进行扩容
+  
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+        Node<K,V>[] tab; Node<K,V> p; int n, i;
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            Node<K,V> e; K k;
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;
+            else if (p instanceof TreeNode)//如果链表已经红黑树化，用红黑树方式存入
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) { //挂载到最后
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD - 1) 
+                            treeifyBin(tab, hash);// 如果数组容量不到64，单条链表到达8也不会树化，此时只会进行扩容
+                        break;
+                    }
+                    //找到相同的key，返回替换value
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+}
+~~~
+
+HashMap初始化后
+
+![img_0.png](src/image/HashMap初始化.png)
+
+## HashTable
+
+介绍
+~~~ text
+HashTable 键和值都不能为null
+HashTable 线程安全，HashMap 线程不安全，但效率高
+底层有数组 Hashtable$Entry[] 初始化为11，阈值threshold=11*0.75=8
+
+扩容条件：count >= threshold
+扩容方法：rehash()
+扩容倍数：int newCapacity = (oldCapacity << 1) + 1;
+~~~
+
+## Properties
+
+介绍
+~~~
+Properties类继承自HashTable类并且实现Map接口
+还可以用于从 ***.properties文件中，加载数据到Propertiesa类对象，进行读取和修改
+~~~
+
+# 使用总结
+
+![img_0.png](src/image/集合使用总结.png)
 
 
 

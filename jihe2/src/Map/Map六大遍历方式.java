@@ -12,7 +12,7 @@ public class Map六大遍历方式 {
         map.put("胡歌",null);
         map.put(null,"护士");
 
-        // keySet获取key集合
+        // keySet获取key的Set集合
         Set set = map.keySet();
 
         // 1 增强for
