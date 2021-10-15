@@ -340,7 +340,7 @@ ArrayList 和 LinkedList 比较
 ![img_0.png](src/image/ArrayList和LinkedList比较.png)
 
 如何选择？
-~~~
+~~~ java
 1.如果改查多，选择ArrayList
 2.如果增删多，选择LinkedList
 3.一般大部分都是改查，大部分情况都会选ArrayList
@@ -348,7 +348,7 @@ ArrayList 和 LinkedList 比较
 
 #Set
 
-~~~
+~~~ java
 1.无序（存放和取出的顺序不一致），没有索引，不能用普通for循环遍历
 2.不允许重复元素，最多有一个null
 3.取出的顺序固定，按hashCode排列
