@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Biji.iml" filepath="$PROJECT_DIR$/.idea/Biji.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jihe2/jihe2.iml" filepath="$PROJECT_DIR$/jihe2/jihe2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/redis/redis.iml" filepath="$PROJECT_DIR$/redis/redis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DXC/DXC.iml" filepath="$PROJECT_DIR$/DXC/DXC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JH/JH.iml" filepath="$PROJECT_DIR$/JH/JH.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Linux/Linux.iml" filepath="$PROJECT_DIR$/Linux/Linux.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Redis/Redis.iml" filepath="$PROJECT_DIR$/Redis/Redis.iml" />
     </modules>
   </component>
 </project>
