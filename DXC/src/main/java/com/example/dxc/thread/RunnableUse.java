@@ -23,7 +23,7 @@ class Tiger extends Animal implements Runnable {
 }
 
 
-class ThreadProxy implements Runnable { //线程代理类
+class ThreadProxy implements Runnable { //线程代理类，模拟Thread类
 
     private Runnable target = null;//属性是Runnable类型
 
