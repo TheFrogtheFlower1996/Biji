@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/JH/JH.iml" filepath="$PROJECT_DIR$/JH/JH.iml" />
       <module fileurl="file://$PROJECT_DIR$/Linux/Linux.iml" filepath="$PROJECT_DIR$/Linux/Linux.iml" />
       <module fileurl="file://$PROJECT_DIR$/Redis/Redis.iml" filepath="$PROJECT_DIR$/Redis/Redis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SJK_YouHua/SJK_YouHua.iml" filepath="$PROJECT_DIR$/SJK_YouHua/SJK_YouHua.iml" />
     </modules>
   </component>
 </project>

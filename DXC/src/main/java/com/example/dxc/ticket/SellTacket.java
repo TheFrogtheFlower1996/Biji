@@ -7,12 +7,13 @@ package com.example.dxc.ticket;
  */
 public class SellTacket {
     public static void main(String[] args) {
+//        Thread3 thread3 = new Thread3();
+//        Thread3 thread4 = new Thread3();
+//        Thread3 thread5 = new Thread3();
         Thread3 thread3 = new Thread3();
-        Thread3 thread4 = new Thread3();
-        Thread3 thread5 = new Thread3();
         new Thread(thread3).start();
-        new Thread(thread4).start();
-        new Thread(thread5).start();
+        new Thread(thread3).start();
+        new Thread(thread3).start();
     }
 }
 
@@ -20,24 +21,45 @@ public class SellTacket {
 class Thread3 implements Runnable {
 
     private int ticketNum = 100;
-    private boolean loop = true;
+    private boolean loop = true;//控制run方法的变量
+    Object object = new Object();
 
-    public synchronized void sell() {
-        while (loop){
-            if (ticketNum <= 0){
-                System.out.println("售票结束");
-                break;
+    /*
+    * 如果是静态方法，锁在 类 上面
+    *
+    * */
+
+    public synchronized static void m1() { }
+
+    public static void m2() {
+        synchronized (Thread3.class){ }
+    }
+
+    /*
+    * 方法锁，锁在 this对象上
+    * 同步代码块，互斥锁还是在this对象
+    * */
+    public /*synchronized*/ void sell() {
+        synchronized (/*this*/object) {
+            if (ticketNum <= 0) {
+                System.out.println("售票结束....");
+                loop = false;
+                return;
             }
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("窗口"+Thread.currentThread().getName()+" 剩余票数"+(ticketNum--)+" 购票成功");
+            System.out.println("窗口" + Thread.currentThread().getName() + " 购票成功 " + " 剩余票数" + (--ticketNum));
         }
     }
+
     @Override
     public void run() {
-        sell();
+        while (loop){
+            sell();
+        }
+
     }
 }
