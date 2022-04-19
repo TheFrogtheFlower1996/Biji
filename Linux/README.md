@@ -1,27 +1,28 @@
-#linux 入门笔记
+# linux 入门笔记
 
 # 网络连接的三种模式
 
+~~~text
 1. 桥接模式：虚拟系统可以和外界直接通讯，容易造成IP冲突
 2. NAT模式：网络地址转换模式，虚拟系统可以和外部系统通讯，不造成IP冲突；但只能从虚拟系统访问外界，外界无法访问虚拟机
 3. 主机模式：独立的系统
-
+~~~
 
 ![img_0.png](src/image/网络连接.png)
 
 # 虚拟机快照
-
+~~~text
 在使用虚拟机时，如果想回到某一个状态，也就是说你担心可能某些误操作可能造成系统异常，需要回到原先某个正常运行的状态
-
+~~~
 
 ![img_0.png](src/image/虚拟机快照.png)
 
-# 共享文件
+# 共享文件 vmtools 方式
 
-方式一：vmtools
-
+~~~text
 1. 最高权限进入系统，重新安装VMware Tools，进入VMwareTools目录，将**.tar.gz拷贝到opt目录下
 2. 打开终端，（cd /opt）进入opt目录下，（tar -zxvf **.tar.gz）解压并进入，（./vmware-install.pl）安装
+~~~
 
 ![img_0.png](src/image/VMwarwtools.png)
 
@@ -47,22 +48,26 @@
 
 ## vim的三种模式
 
+~~~text
 1. 正常模式
-   * 以vim打开一个档案就直接进入一般模式了（默认模式），在这个模式中，可以使用【上下左右】按键来移动光标，
-可以使用【删除字符】或【删除整行】来处理内容，也可以使用【复制、黏贴】来处理文件数据
+    以vim打开一个档案就直接进入一般模式了（默认模式），在这个模式中，可以使用【上下左右】按键来移动光标，
+    可以使用【删除字符】或【删除整行】来处理内容，也可以使用【复制、黏贴】来处理文件数据
 
 2. 插入模式
-   * 按下i进入编辑模式
+    按下i进入编辑模式
 
 3. 命令行模式
-   * 在编辑模式下，按Esc键，再按 冒号: 或 斜杠/，后面跟上命令
-在这个模式中，可以提供你相关的指令，完成读取、存盘、替换、离开vim、显示行号等动作
+    在编辑模式下，按Esc键，再按 冒号: 或 斜杠/，后面跟上命令
+    在这个模式中，可以提供你相关的指令，完成读取、存盘、替换、离开vim、显示行号等动作
 
+~~~
 
 ![img_0.png](src/image/vim各模式转换.png)
 
 ## vim快捷键使用
-1. 一般模式下
+
+* 一般模式下 快捷键
+
 ~~~text
 拷贝当前行：yy
 拷贝多行：5yy
@@ -73,11 +78,14 @@
 撤销：u
 移动到指定行：输入行号+shift+g
 ~~~
-2. 命令行模式下
+
+* 命令行模式下 快捷键
+
 ~~~textmate
 查找某个单词：/关键字，回车查找，按n下一个
 设置文件行号:(:set nu 或 :set nonu)
 ~~~
+
 # 用户管理指令
 
 ## 开关机指令
@@ -91,12 +99,14 @@
 | sync | 把内存的数据同步到磁盘 |
 
 ## 用户登录和注销
+
 | 符合 | 表示 |
 | :---- | ---- |
 | su | 普通用户切换系统管理员 |
 | logout | 注销用户，logout注销指令在图形运行级别无效，在运行级别下有效 |
 
 ## 添加和删除用户
+
 | 符合 | 表示 |
 | :---- | ---- |
 | id | 查询用户 |
@@ -107,6 +117,7 @@
 | userdel -r | 删除用户并删除家目录 |
 
 ## 用户组
+
 | 符合 | 表示 |
 | :---- | ---- |
 | groupadd | 新增组 |
@@ -116,14 +127,12 @@
 | cat -n etc/group | 查看所有组
 
 ## 用户和相关信息
+
 | 符合 | 表示 |
 | :---- | ---- |
 | /etc/passwd | 用户的配置文件，记录用户的各种信息，每行的含义：用户名：口令：用户标识符：组标识符：注释行描述：主目录：登录Shell |
 | /etc/shadow | 口令的配置文件，每行的含义：登录名：加密口令：最后一次修改时间：最小时间间隔：最大时间间隔：警告时间：不活动时间：失效时间：标志 |
 | /etc/group | 组（group）的配置文件，记录Linux包含的组信息，每行的含义：组名：口令：组标识号：组内用户列表 |
-
-
-
 
 ![img_0.png](src/image/用户信息.png)
 
@@ -132,11 +141,11 @@
 ![img_0.png](src/image/组内信息.png)
 
 
-#实用指令
+# 实用指令
 
-##指定运行级别
+## 指定运行级别
 ~~~text
-0:关机
+0: 关机
 1：单用户【找回丢失密码】
 2：多用户下状态没有网络服务
 3：多用户下有网络服务
@@ -149,11 +158,13 @@
 常用运行的是 3 和 5，也可以指定默认运行级别
 ~~~
 
-##设置运行级别
+## 设置运行级别
 
+~~~text
 在SentOS7之前，在/etc/initab文件中设置
 
 在SentOS7之后，进行了简化，如下：
+~~~
 
 |  符号   | 表示  |
 |  :----  | ----  |
@@ -164,7 +175,8 @@
 
 
 ## 找回root密码
-CentOS7以后，找回root密码方式
+
+* CentOS7以后，找回root密码方式
 ~~~text
 1.系统开机按e进入编辑界面，找到 "Linux16" 开头那行，在后面输入：init=/bin/sh，按下ctrl+x，表示进入 单用户模式
 2.进入单用户模式后，输入：mount -o remount,rw / 回车
@@ -173,14 +185,14 @@ CentOS7以后，找回root密码方式
 5.再输入：exec /sbin/init 回车，等待较长时间重启
 ~~~
 
-##帮助指令
+## 帮助指令
 ~~~text
 man 获得帮助信息
     语法：man [命令或配置文件]
     例如：man ls 查看列出文件ls帮助信息
 ~~~
 
-##文件目录类
+## 文件目录类
 
 |  符号   | 表示  | 
 |  :----  | ----  |
@@ -238,7 +250,7 @@ man 获得帮助信息
 | unzip -d 解压位置 解压文件 | 指定解压后文件的存放位置 |
 | tar -zcvf 打包名称.tar.gz 打包文件 | 打包，最后打包的文件是 *.tar.gz |
 | tar -zxvf 解压文件 | 解压 |
-| tar -zxvf 解压文件 -C 解压路径 | 解压到指定位置 |
+| tar -zxvf 解压文件 -C 解压路径 | 解压到指定路径 |
 | -c | 产生.tar打包文件 |
 | -v | 显示详细信息 |
 | -f | 指定压缩后的文件名 |
@@ -248,7 +260,7 @@ man 获得帮助信息
 
 # 组管理
 
-每个用户必须属于一个组，不能独立于组外，在linux中每个文件有所有者、所在组、其他组的概念
+* 每个用户必须属于一个组，不能独立于组外，在linux中每个文件有所有者、所在组、其他组的概念
 
 ## 文件/目录 所有者
 
@@ -259,7 +271,7 @@ man 获得帮助信息
 
 ## 文件/目录 所在组
 
-当某个用户创建了一个文件后，这个文件所在组就是该用户所在的组
+* 当某个用户创建了一个文件后，这个文件所在组就是该用户所在的组
 
 ## 组的创建
 
@@ -271,7 +283,7 @@ man 获得帮助信息
 
 ## 其他组
 
-除文件所有者和所在组的用户外，系统的其他用户都是文件的其他组
+* 除文件所有者和所在组的用户外，系统的其他用户都是文件的其他组
 
 |  符号   | 表示  | 
 |  :----  | ----  |
@@ -280,29 +292,36 @@ man 获得帮助信息
 
 # 权限管理
 
+~~~shell
 drwxr-xr-x. 3 zh   root    4096 1月  14 14:48 cs
 
 d rwx r-x r-x. 3 zh   root    4096 1月  14 14:48 cs
+~~~
 
-##0-9位说明
+## 0-9位说明
 
-1.
-   * 0位 表示 文件类型
-      * — 表示普通文件
-      * l 表示链接，相当于快捷方式
-      * d 表示目录，相当于文件夹
-      * c 字符设备文件，鼠标，键盘
-      * b 代表 块设备，比如硬盘
-   * 1到3位 文件所有者对文件的权限  
-   * 4到6位 同用户组的用户对文件的权限
-   * 7到9位 其他用户对该文件的权限
+~~~text
+0位 表示 文件类型
+
+      — 表示普通文件
+      l 表示链接，相当于快捷方式
+      d 表示目录，相当于文件夹
+      c 字符设备文件，鼠标，键盘
+      b 代表 块设备，比如硬盘
+      
+1到3位 文件所有者对文件的权限
+
+4到6位 同用户组的用户对文件的权限
+
+7到9位 其他用户对该文件的权限
+~~~
 
 ## rwx权限
 
 ![img_0.png](src/image/权限.png)
 
 
-rwx作用到文件夹
+* rwx作用到文件夹
 
 | 符号   | 表示  |
 |  :----  | ----  |
@@ -310,7 +329,7 @@ rwx作用到文件夹
 | w write | 可写，但不代表可以删除，删除一个文件的前提条件是对该文件可写
 | x execcute| 可以被执行 |
 
-rwx作用到目录
+* rwx作用到目录
 
 | 符号   | 表示  |
 |  :----  | ----  |
@@ -322,8 +341,11 @@ rwx作用到目录
 
 ### 1. +、-、= 变更方式
 
+~~~text
 u：所有者，g：所在组，o：其他人，a：所有人（u、g、o的总和）
+~~~
 
+* 例子
 ~~~text
 例1.给abc文件 的所有者读写执行的权限，给所在组读执行权限，给其他组读执行权限
 chmod u=rwx,g=rx,o=rx abc
@@ -337,7 +359,7 @@ chmod o+r abc
 
 ### 2. 通过数字变更权限
 
-
+~~~text
 r=4，w=2，x=1
 
 3 写执行
@@ -351,21 +373,24 @@ r=4，w=2，x=1
 * 例子 chmod u=rwx,g=rx,o=x abc
 
 * 相当于 chmod 751 abc
+~~~
 
 ## 修改所有者
+
 | 符号   | 表示  |
 | :---- | ----  |
 | chown 新所有者 目录/文件 | 修改文件所有者 |
-| chown -R 新所有者 目录/目录 | 递归修改目录下文件所有者 |
+| chown -R 目录/目录 | 递归修改目录下文件所有者 |
 
 ## 修改所在组
+
 | 符号 | 表示  |
 | :---- | ---- |
 | chgrp 新组 目录/文件 | 修改文件/目录所在组 |
 
-~~~text
-练习1
+* 例子
 
+~~~text
 1.创建警察（police）和土匪（bandit）组
     groupadd police; groupadd bandit;
 2.创建用户 
@@ -377,9 +402,9 @@ r=4，w=2，x=1
     chmod g+w,o+r a.txt
 ~~~
 
-~~~text
-对文件的 rwx 理解
+* 对文件的 rwx 理解
 
+~~~text
 x   表示可以进入该目录，比如cd
 r   表示可以显示目录列表，比如ls
 w   表示可以删除或创建文件
@@ -394,14 +419,13 @@ w   表示可以删除或创建文件
 | -r | 删除当前用户的所有crontab任务 |
 | service crond restart | 重启任务调度 |
 
-~~~txt
+~~~text
 设置任务调度文件：/etc/crontab，接着输入任务到调度文件，如：*/1 * * * * ll /etc/to.txt，表示每分钟执行一次
 
 */1 * * * *：参数细节：分钟，小时，天，月，星期几（0-7，0和7都代表星期天）
-
 ~~~
 
-特殊符号说明
+* 特殊符号说明
 
 | 符号 | 表示  |
 | :---- | ---- |
@@ -410,26 +434,29 @@ w   表示可以删除或创建文件
 | - | 表示连续的时间范围，比如 0 5 * * 1-6 ，表示周一到周六的5点0分执行一次 |
 | */n | 表示每隔多久执行一次，比如 */10 * * * * ，表示每隔10分钟执行一次 |
 
-~~~txt
+* 例子
+~~~text
 例1：每隔一分钟，就将当前的日期信息，追加到 /tmp/mydate 文件中
-步骤：crontab -e 进入定时编辑器，追加 */1 * * * * date >> /tmp/mydate
+
+    步骤：crontab -e 进入定时编辑器，追加 */1 * * * * date >> /tmp/mydate
 
 例2：每隔1分钟，将当前日期和日历都追加到 /home/mycal 文件中
 
-步骤：
-1.先写shell脚本，vim /home/my.sh，写入内容 date >> /home/mycal 和 cal >> /home/mycal
-2.给my.sh增加执行权限，chmod u+x /home/my.sh
-3.编辑定时器脚本，crontab -e 进入，添加 */1 * * * * /home/my.sh
+    步骤：
+    1.先写shell脚本，vim /home/my.sh，写入内容 date >> /home/mycal 和 cal >> /home/mycal
+    2.给my.sh增加执行权限，chmod u+x /home/my.sh
+    3.编辑定时器脚本，crontab -e 进入，添加 */1 * * * * /home/my.sh
 
 例3：每天凌晨2点将mysql数据库testdb，备份到文件中
-步骤：
-1.crontab -e 进入定时编辑器
-2.0 2 * * * mysqldump -u -proot testdb > /home/db.bak 追加到最后
+
+    步骤：
+    1.crontab -e 进入定时编辑器
+    2.0 2 * * * mysqldump -u -proot testdb > /home/db.bak 追加到最后
 ~~~
 
 ## at定时任务
 
-介绍
+* 介绍
 ~~~text
 1. at命令是一次性定时任务计划，at的守护进程atd会以后台模式运行，检查作业队列运行
 2.默认情况下，atd守护进程没60秒检查作业队列，有作业时，会检查作业运行时间，如果时间与当前时间匹配，则运行此作业
@@ -439,7 +466,7 @@ w   表示可以删除或创建文件
 ps -ef | grep atd // 可以检测atd是否运行
 ~~~
 
-at命令格式
+* at命令格式
 
 | 符号 | 表示  |
 | :---- | ---- |
@@ -455,7 +482,7 @@ at命令格式
 | -f <文件> | 从指定文件读入任务而不是从标准输入读入 |
 | -t <时间参数> | 以时间参数的形式提交要运行的任务 |
 
-at时间定义
+* at时间定义
 
 ~~~text
 1.接受在当日的hh:mm(小时：分钟)式的时间指定，假如该时间已过去，那么就放到第二天执行
@@ -467,23 +494,23 @@ at时间定义
 6.直接使用today或tomorrow来指定完成命令的时间
 ~~~
 
-示例
+* 示例
 
 ~~~text
 例1：2天后的下午5点执行 /bin/ls /home
 
-步骤1：at 5pm + 2days 回车
-步骤2：at> /bin/ls /home 按两次 Ctrl + D 结束
+    步骤1：at 5pm + 2days 回车
+    步骤2：at> /bin/ls /home 按两次 Ctrl + D 结束
 
 例2：明天下午5点，输出时间到指定文件内，比如 /root/data100.log
 
-步骤1：at 5pm tomorrow
-步骤2：at> date > /root/data100.log
+    步骤1：at 5pm tomorrow
+    步骤2：at> date > /root/data100.log
 
 
 例3：2分钟后，输出时间到指定文件内，比如/root/date200.log
-at now + 2 minutes
-at> date > /root/data200.log
+    at now + 2 minutes
+    at> date > /root/data200.log
 ~~~
 
 # linux分区
@@ -491,14 +518,13 @@ at> date > /root/data200.log
 ~~~text
 1. linux来说无论有几个分区，分给哪一个使用，它归根结底就只有一个根目录，一个独立且唯一的文件结构，linux中每个分区都是用来组成整个文件系统的一部分
 2. linux采用了一种叫 ”载入“ 的处理方法，它的整个文件系统中包含了一整套的文件和目录，且将一个分区和一个目录联系起来。这时要载入的一个分区将使它的存储空间在一个目录下获得
-
 ~~~
 
 
 ![img_0.png](src/image/linux分区.png)
 
 
-硬盘说明
+* 硬盘说明
 ~~~text
 1.linux硬盘分IDE硬盘和SCSI硬盘，目前基本上是SCSI硬盘
 2.对于IDE硬盘，驱动器标识符为 ”hdx~“，其中”hd“表明分区所在设备的类型，这里是指IDE硬盘了。”x“为盘号（a为基本盘，b为基本从属盘，c为辅助主盘，d为辅助从属盘），
@@ -521,48 +547,143 @@ at> date > /root/data200.log
 | umount 设备名 卸载目录或设备名 | 卸载 |
 |  |  |
 
-初始硬盘分区
+* 初始硬盘分区
 
 ![img_0.png](src/image/硬盘分区.png)
 
-新增硬盘
+* 新增硬盘
 
 ![img_0.png](src/image/硬盘分区后.png)
 
-分区命令：fdisk /dev/sdb
+* 分区命令：fdisk /dev/sdb
 
 ![img_0.png](src/image/增加分区.png)
 
-分区后
+* 分区后
 
 ![img_0.png](src/image/分区后.png)
 
-分区后未格式化，未挂载
+* 分区后未格式化，未挂载
 
 ![img_0.png](src/image/未格式化挂载.png)
 
-mkfs -t ext4 /dev/sdb1 格式化sdb1
+* mkfs -t ext4 /dev/sdb1 格式化sdb1
 
 ![img_0.png](src/image/格式化.png)
 
 
-mount /dev/sdb1 /newdisk/，把sdb1分区挂载到newdisk目录下
+* mount /dev/sdb1 /newdisk/，把sdb1分区挂载到newdisk目录下
 
 ![img_0.png](src/image/挂载.png)
 
 
+# mysql
+
+1. 检查系统是否自带mysql和mariadb，有的话删除
+
+2. 把下载好的 mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz 放到 /opt/ 路径下
+
+![img_0.png](src/image/mysql.png)
 
 
+3. 解压
+~~~shell
+tar -zxvf /opt/mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz
+~~~
 
+4. 移动并重命名
+~~~shell
+mv /opt/mysql-5.7.37-linux-glibc2.12-x86_64 /usr/local/mysql-5.7.37
+~~~
 
+5. 递归修改权限为 mysql用户 mysql组
+~~~shell
+chown mysql.mysql -R /usr/local/mysql-5.7.37
+~~~
 
+6. 在/usr/local/mysql-5.7.37/support-files/路径下创建 my_default.cnf
+~~~shell
+vim /usr/local/mysql-5.7.37/support-files/my_default.cnf
+~~~
 
+7. my_default.cnf 复制进该内容
+~~~shell
+[mysqld]
+#设置mysql的安装目录
+basedir =/usr/local/mysql-5.7.37
+#设置mysql数据库的数据存放目录
+datadir = /usr/local/mysql-5.7.37/data
+#设置端口
+port = 3306
 
+socket = /tmp/mysql.sock
+#设置字符集
+character-set-server=utf8
+#日志存放目录
+log-error = /usr/local/mysql-5.7.37/data/mysqld.log
+pid-file = /usr/local/mysql-5.7.37/data/mysqld.pid
+#允许时间类型的数据为零(去掉NO_ZERO_IN_DATE,NO_ZERO_DATE)
+sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+#ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+~~~
 
+8. 拷贝覆盖 /etc/my.cnf/ 
+~~~shell
+cp my_default.cnf /etc/my.cnf
+~~~
 
+9. 初始化mysql
+~~~shell
+./bin/mysqld --initialize --user=mysql --basedir=/usr/local/mysql-5.7.37/ --datadir=/usr/local/mysql-5.7.37/data/
+~~~
 
+10. 初始化完成之后查看日志，获得初始密码
+~~~shell
+cat /usr/local/mysql-5.7.37/data/mysqld.log
+~~~
+![img_0.png](src/image/mysql密码.png)
 
+11. 把启动脚本放到开机初始化目录
+~~~shell
+cp support-files/mysql.server /etc/init.d/mysql
+~~~
 
+12. 开启mysqL
+~~~shell
+service mysql start
+~~~
+
+13. 登录，密文
+~~~shell
+mysql -uroot -p
+~~~
+
+14. 修改初始密码
+~~~shell
+mysql>set password for root@localhost = password('123456');
+~~~
+
+15. 添加远程访问权限
+~~~shell
+mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'mysql密码' WITH GRANT OPTION;
+~~~
+
+16. 刷新，退出，
+~~~shell
+mysql>FLUSH PRIVILEGES;
+mysql>exit;
+~~~
+
+17. 退出数据库后,执行以下命令打开防火墙端口3306
+~~~shell
+firewall-cmd --zone=public --add-port=3306/tcp --permanent
+~~~
+
+18. 重启防火墙并查看是否生效
+~~~shell
+firewall-cmd --reload        #重启firewall
+firewall-cmd --list-ports    #查看已经开放的端口
+~~~
 
 
 
